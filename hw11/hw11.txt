@@ -1,0 +1,179 @@
+openapi: 3.0.1
+info:
+  title: Робот-пылесос
+  version: 0.0.1
+servers:
+  - url: http://localhost:8080/api/v1/
+    description: Dev server
+paths:
+  /users:
+    get:
+      summary: Метод получения списка пользователей
+      tags:
+        - Users
+      operationId: getAllUsers
+      responses:
+        "200":
+          description: Успешный ответ со списком пользователей
+          content:
+            adplication/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "default":
+          description: Все остальные варианты
+          content:
+            adplication/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    post:
+      summary: Метод добавления нового пользователя
+      tags:
+        - Users
+      operationId: createUser
+      requestBody:
+        required: true
+        content:
+            adplication/json:
+              schema:
+                $ref: "#/components/schemas/User"
+      responses:
+        "200":
+          description: Успешный ответ добавления нового пользователя
+          content:
+            adplication/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "default":
+          description: Все остальные варианты
+          content:
+            adplication/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /users/{idUser}:
+    get:
+      summary: Метод получения пользователя по id
+      tags: 
+        - Users
+      operationId: getUserId
+      parameters:
+        - name: idUser
+          in: path
+          required: true
+          description: id User
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Успешный ответ получения пользователя по id
+          content:
+            adplication/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "default":
+          description: Все остальные варианты
+          content:
+            adplication/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    delete:
+      summary: Метод удаления пользователя по id
+      tags: 
+        - Users
+      operationId: deleteUserById
+      parameters:
+        - name: idUser
+          in: path
+          required: true
+          description: id User
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Успешный ответ удаления пользователя по id
+          content:
+            adplication/json: {}
+        "default":
+          description: Все остальные варианты
+          content:
+            adplication/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+components:
+  schemas:
+    Robot:
+      type: object
+      required:
+        - id
+        - model
+        - version
+        - status
+        - resource
+        - fabricName
+        - ipAdress
+        - idGroup
+      properties:
+        id:
+          type: integer
+          example: 1
+        model:
+          type: string
+          example: abc123
+        version:
+          type: string
+          example: 123abc
+        status:
+          type: string
+          example: worked
+        resource:
+          type: integer
+          example: 75
+        fabricName:
+          type: string
+          example: a1b2c3
+        ipAdress:
+          type: string
+          example: 192.168.2.5
+        idGroup:
+          type: integer
+          example: 1
+    Robots:
+      type: array
+      items:
+        $ref: "#/components/schemas/Robot"
+    User:
+      type: object
+      required:
+        - id
+        - login
+        - hashPassword
+        - email
+      properties:
+        id:
+          type: integer
+          example: 1
+        login:
+          type: string
+          example: login
+        hashPassword:
+          type: string
+          example: 1a2b3c
+        email:
+          type: string
+          example: exemple@test.ru
+    Users:
+      type: array
+      items:
+        $ref: "#/components/schemas/User"
+    Error:
+      type: object
+      required:
+        - codeError
+        - messageError
+      properties:
+        codeError:
+          type: string
+          example: f3
+        messageError:
+          type: string
+          example: Errorf3
+        
